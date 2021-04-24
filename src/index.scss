@@ -1,0 +1,68 @@
+.card-link {
+  color: #212529 !important;
+  text-decoration: none !important;
+
+  &:hover {
+    color: #212529 !important;
+    text-decoration: none !important;
+  }
+}
+
+@media (min-width: 320px) {
+  .movie-list {
+    margin-bottom: 20px;
+  }
+}
+
+@media (min-width: 768px) {
+  .filters {
+    .col:first-child {
+      text-align: right;
+    }
+  }
+
+  .movie-list {
+    min-height: 302px;
+    margin-top: 20px;
+  }
+}
+
+.spinner-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  .dual-ring {
+    display: inline-block;
+    width: 80px;
+    height: 80px;
+
+    &::after {
+      content: ' ';
+      display: block;
+      width: 64px;
+      height: 64px;
+      margin: 8px;
+      border-radius: 50%;
+      border: 6px solid #cef;
+      border-color: #cef transparent #cef transparent;
+      animation: dual-ring 1.2s linear infinite;
+    }
+  }
+}
+
+@mixin keyframes($name) {
+  @keyframes #{$name} {
+    @content;
+  }
+}
+
+@include keyframes(dual-ring) {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
+}
