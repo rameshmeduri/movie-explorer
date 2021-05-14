@@ -22,6 +22,7 @@ const List = () => {
   const { data, error, loading } = useFetch();
   const [year, setYear] = useState('');
   const [genre, setGenre] = useState('');
+  const [movieName, setMovieName] = useState('');
   const [filtered, setFiltered] = useState([]);
 
   useEffect(() => {
@@ -37,21 +38,33 @@ const List = () => {
     } else {
       setFiltered([]);
     }
-  }, [year, genre]);
+  }, [year, genre, movieName]);
+
+  const onChange = (e) => {
+    setMovieName(e.target.value);
+  };
 
   const applyFilters = () => {
-    if (!year && !genre) {
+    if (!year && !genre && !movieName) {
       return data;
     }
-    if (year && genre) {
-      return data.filter((item) => item.productionYear == year && item.genre === genre);
-    }
+
+    let filtered = data;
+
     if (year) {
-      return data.filter((item) => item.productionYear == year);
+      filtered = filtered.filter((item) => item.productionYear == year);
     }
     if (genre) {
-      return data.filter((item) => item.genre === genre);
+      filtered = filtered.filter((item) => item.genre === genre);
     }
+    if (movieName) {
+      filtered = filtered.filter((item) => {
+        const lowerItem = (item.name).toLowerCase();
+        const lowerMovieName = movieName.toLowerCase();
+        return (lowerItem.indexOf(lowerMovieName) !== -1);
+      });
+    }
+    return filtered;
   };
 
   if (loading) return <Spinner />;
@@ -85,6 +98,18 @@ const List = () => {
           </select>
         </div>
       </section>
+
+      <div className="mt-5">
+        <input
+          type="text"
+          className="form-control"
+          spellCheck="false"
+          placeholder="search movie"
+          value={movieName}
+          onChange={onChange}
+        />
+      </div>
+
       <section className="row">{filtered.length ? filtered.map(MovieList) : null}</section>
     </div>
   );
